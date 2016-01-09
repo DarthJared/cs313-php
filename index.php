@@ -3,6 +3,6 @@
 	<head>
 	</head>
 	<body>
-		<p>Hello CS313 World!</p>
+		<p>Hello World!</p>
 	</body>
 </html>
