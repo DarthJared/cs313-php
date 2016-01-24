@@ -1,16 +1,21 @@
-<?php
-	if(!isset($_COOKIE["has_visited_survey"])) {
-		header('Location: http://php-jbeagley.rhcloud.com/results.php');
-	}
-
-?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>Awesome Survey</title>
 		<link rel="stylesheet" type="text/css" href="survey.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<script src="survey.js"></script>
+		<script>
+			var redirect = false;
+<?php
+	if(!isset($_COOKIE["has_visited_survey"])) {
+		echo "redirect = true;"
+	}
+?>
+
+			if (redirect) {
+				window.location.replace("http://php-jbeagley.rhcloud.com/results.php");	
+			}
+		</script>
 	</head>
 	<body>
 		<div id="titleText">
