@@ -10,10 +10,10 @@ $(window).resize(function() {
 });
 
 function resizeNav() {
-	if(url.match("home.php$")) {
-		//alert("home");
-		$("#nav2").css("background-color", "#7A7A7A");
-		$("#nav2").hover(function() {
+	if(url.match("assignments.php$")) {		
+		//alert("assignments");
+		$("#nav1").css("background-color", "#7A7A7A");
+		$("#nav1").hover(function() {
 			$(this).css("background-color", "#525252");
 		},
 		function() {
@@ -21,9 +21,9 @@ function resizeNav() {
 		});
 	}
 	else {
-		//alert("assignments");
-		$("#nav1").css("background-color", "#7A7A7A");
-		$("#nav1").hover(function() {
+		//alert("home");
+		$("#nav2").css("background-color", "#7A7A7A");
+		$("#nav2").hover(function() {
 			$(this).css("background-color", "#525252");
 		},
 		function() {
@@ -51,7 +51,10 @@ function resizeNav() {
 		$("#nameText").css("top", "13px");
 	}
 	
-	if(url.match("home.php$")) {
+	if(url.match("assignments.php$")) {
+		
+	}
+	else {
 		var textW = winWidth - $("#wedPic").width() - 40;
 		$("#aboutMe").css("width", textW + "px");
 		var textL = $("#wedPic").width() + 20;
