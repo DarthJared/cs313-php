@@ -53,7 +53,7 @@
 			var $xml = $( xmlText );
 			
 			$xml.find( "submission" ).each(function(){
-				alert("here");
+				//alert("here");
 				var brand = $(this).find("brand").text();
 				if (brand == "HP") {
 					hpCount++;
@@ -68,7 +68,7 @@
 					lenovoCount++;
 				}
 				else if (brand == "Asus") {
-					alert("another");
+					//alert("another");
 					asusCount++;
 				}
 				else if (brand == "Acer") {
