@@ -1,0 +1,24 @@
+body {
+	background-image: url("images/greyBack.jpg");
+	background-size: cover;
+}
+#titleText {
+	position: absolute;
+	font-size: 50px;
+	width: 600px;
+	left: 50%;
+	margin-left: -300px;
+	text-align: center;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+#surveyForm {
+	position: absolute;
+	width: 450px;
+	top: 100px;
+	left: 50%;
+	margin-left: -235px;
+	background-color: #B8B8B8;
+	padding: 10px;
+	border-radius: 10px;
+	margin-bottom: 20px;
+}
