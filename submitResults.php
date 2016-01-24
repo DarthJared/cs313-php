@@ -46,7 +46,7 @@
 			<?php
 				$readFile = fopen("results.txt", "r") or die("Unable to open file!");
 				
-				echo "var results = '" . fread($readFile, filesize("results.txt")) . "';";
+				echo "var results = '" . fread($readFile, filesize("check.txt")) . "';";
 				fclose($readFile);
 			?>
 			var xmlText = $.parseXML(results);
