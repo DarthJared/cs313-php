@@ -14,7 +14,7 @@
 
 			if (redirect) {
 				alert("move");
-				window.location.replace("http://php-jbeagley.rhcloud.com/results.php");	
+				//window.location.replace("http://php-jbeagley.rhcloud.com/results.php");	
 			}
 		</script>
 	</head>
