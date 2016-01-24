@@ -13,6 +13,7 @@
 ?>
 
 			if (redirect) {
+				alert("move");
 				window.location.replace("http://php-jbeagley.rhcloud.com/results.php");	
 			}
 		</script>
