@@ -1,4 +1,8 @@
 <?php
+	$cookie_name = "has_visited_survey";
+	$cookie_value = "Yes";
+	setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
+	
 	$currentFile = fopen("results.txt", "r") or die("Unable to open file!");
 	$current = fread($currentFile, filesize("results.txt"));
 	fclose($currentFile);

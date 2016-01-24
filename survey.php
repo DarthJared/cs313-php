@@ -1,3 +1,9 @@
+<?php
+	if(!isset($_COOKIE["has_visited_survey"])) {
+		header('Location: http://php-jbeagley.rhcloud.com/results.php');
+	}
+
+?>
 <!DOCTYPE html>
 <html>
 	<head>
