@@ -11,12 +11,12 @@
 			<div id="nameText">JARED BEAGLEY</div>
 		</div>
 		<div id="navigators">
-			<a href="home.php"><div id="nav1" class="topNav">HOME</div></a>
+			<a href="index.php"><div id="nav1" class="topNav">HOME</div></a>
 			<a href="assignments.php"><div id="nav2" class="topNav">ASSIGNMENTS</div></a>
 		</div>
 		<div id="content">
 			<div id="assignments">
-				COMING SOON!!!
+				<a href="http://php-jbeagley.rhcloud.com/survey.php">PHP Survey</a>
 			</div>
 		</div>
 	</body>
