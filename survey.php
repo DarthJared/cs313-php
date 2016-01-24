@@ -7,14 +7,13 @@
 		<script>
 			var redirect = false;
 <?php
-	if(!isset($_COOKIE["has_visited_survey"])) {
+	if(isset($_COOKIE["has_visited_survey"])) {
 		echo "redirect = true;";
 	}
 ?>
 
 			if (redirect) {
-				alert("move");
-				//window.location.replace("http://php-jbeagley.rhcloud.com/results.php");	
+				window.location.replace("http://php-jbeagley.rhcloud.com/results.php");	
 			}
 		</script>
 	</head>
