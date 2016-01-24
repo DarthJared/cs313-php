@@ -8,7 +8,7 @@
 			var redirect = false;
 <?php
 	if(!isset($_COOKIE["has_visited_survey"])) {
-		echo "redirect = true;"
+		echo "redirect = true;";
 	}
 ?>
 
