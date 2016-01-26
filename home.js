@@ -7,6 +7,9 @@ $(document).ready(function(){
 });
 $(window).resize(function() {
 	resizeNav();
+	$(this).delay(1000).queue(function() {
+		resizeNav();
+	});
 });
 
 function resizeNav() {
