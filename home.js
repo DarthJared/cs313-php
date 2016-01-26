@@ -4,14 +4,15 @@ var url = window.location.href;
 $(document).ready(function(){
 	//alert("here");
 	resizeNav();
+	//alert("here");
+	$(this).delay(1000).queue(function() {
+		//alert("here");
+		resizeNav();
+	})
 });
 $(window).resize(function() {
 	resizeNav();
-	alert("here");
-	$(this).delay(1000).queue(function() {
-		alert("here");
-		resizeNav();
-	});
+	
 });
 
 function resizeNav() {
