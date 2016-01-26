@@ -7,6 +7,7 @@ $(document).ready(function(){
 });
 $(window).resize(function() {
 	resizeNav();
+	alert("here");
 	$(this).delay(1000).queue(function() {
 		alert("here");
 		resizeNav();
