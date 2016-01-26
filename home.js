@@ -5,7 +5,7 @@ $(document).ready(function(){
 	//alert("here");
 	resizeNav();
 	//alert("here");
-	$(this).delay(1000).queue(function() {
+	$(this).delay(500).queue(function() {
 		//alert("here");
 		resizeNav();
 	})
