@@ -20,7 +20,13 @@
 	function checkUserName() {
 		$userN = 'php';
 		$password = 'php-pass';
-		$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
+		
+		$dbHost = getenv('OPENSHIFT_MYSQL_DB_HOST'); 
+		$dbPort = getenv('OPENSHIFT_MYSQL_DB_PORT'); 
+		$dbUser = getenv('OPENSHIFT_MYSQL_DB_USERNAME'); 
+		$dbPassword = getenv('OPENSHIFT_MYSQL_DB_PASSWORD');
+		$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
+		//$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
 		
 		foreach ($db->query('SELECT username, password FROM user') as $row) {
 			$user["'" . $row['username'] . "'"] = "'" . $row['password'] . "'";
@@ -78,7 +84,13 @@
 		$myId = $_SESSION["userId"];
 		$userN = 'php';
 		$password = 'php-pass';
-		$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
+		
+		$dbHost = getenv('OPENSHIFT_MYSQL_DB_HOST'); 
+		$dbPort = getenv('OPENSHIFT_MYSQL_DB_PORT'); 
+		$dbUser = getenv('OPENSHIFT_MYSQL_DB_USERNAME'); 
+		$dbPassword = getenv('OPENSHIFT_MYSQL_DB_PASSWORD');
+		$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
+		//$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
 		
 		$toJson = array();
 		$jsonStr = "{\"movies\" : [ "; 
@@ -110,7 +122,13 @@
 		$myId = $_SESSION["userId"];
 		$userN = 'php';
 		$password = 'php-pass';
-		$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
+		
+		$dbHost = getenv('OPENSHIFT_MYSQL_DB_HOST'); 
+		$dbPort = getenv('OPENSHIFT_MYSQL_DB_PORT'); 
+		$dbUser = getenv('OPENSHIFT_MYSQL_DB_USERNAME'); 
+		$dbPassword = getenv('OPENSHIFT_MYSQL_DB_PASSWORD');
+		$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
+		//$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
 		
 		$toJson = array();
 		$jsonStr = "{\"movies\" : [ "; 
