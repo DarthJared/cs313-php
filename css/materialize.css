@@ -3114,7 +3114,7 @@ td, th {
 .collection a.collection-item {
   display: block;
   transition: .25s;
-  color: #26a69a;
+  /* color: #26a69a; */
 }
 
 .collection a.collection-item:not(.active):hover {
@@ -3137,7 +3137,7 @@ td, th {
 
 .secondary-content {
   float: right;
-  color: #26a69a;
+  /* color: #26a69a; */
 }
 
 .collapsible .collection {
@@ -3161,7 +3161,7 @@ span.badge.new {
   font-weight: 300;
   font-size: 0.8rem;
   color: #fff;
-  background-color: #26a69a;
+  /* background-color: #26a69a; */
   border-radius: 2px;
 }
 
@@ -3207,12 +3207,12 @@ nav ul a span.badge {
   top: 0;
   left: 0;
   bottom: 0;
-  background-color: #26a69a;
+  /* background-color: #26a69a; */
   transition: width .3s linear;
 }
 
 .progress .indeterminate {
-  background-color: #26a69a;
+  /* background-color: #26a69a; */
 }
 
 .progress .indeterminate:before {
