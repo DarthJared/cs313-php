@@ -1,0 +1,336 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+nav ul a,
+nav .brand-logo {
+  color: #444;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.button-collapse {
+  /* color: #26a69a; */
+}
+
+.add-margin-top {
+	margin-top: 120px;
+}
+
+.parallax-container {
+  min-height: 450px;
+  line-height: 0;
+  height: auto;
+  color: rgba(255,255,255,.9);
+}
+  .parallax-container .section {
+    width: 100%;
+  }
+
+@media only screen and (max-width : 992px) {
+  .parallax-container .section {
+    position: absolute;
+    top: 40%;
+  }
+  #index-banner .section {
+    top: 10%;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  #index-banner .section {
+    top: 0;
+  }
+}
+
+.icon-block {
+  /* padding: 0 15px; */
+}
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+
+.material-icons.md-15 { 
+	font-size: 15px; 
+}
+
+.aub {
+	background-color: #853C6E;
+}
+.aub-text {
+	color: #853C6E;
+}
+.red-text {
+	color: #CD0000;
+}
+.up {
+	margin-top: -8px;
+}
+.whiteT {
+	color: #FFFFFF;
+}
+.shaddowT {
+	text-shadow: black 0.1em 0.1em 0.2em;
+}
+.material-icons.md-100 { 
+	position: relative;
+	font-size: 90px; 
+	/* text-align: center;
+	width: 300px;
+	left: 50%;
+	margin-left: -150px; */
+}
+.material-icons.md-80 { 
+	position: relative;
+	font-size: 80px; 
+	text-align: center;
+	width: 300px;
+	left: 50%;
+	margin-left: -150px;
+}
+.assignList {
+	height: 400px;
+	text-align: center;
+	font-size: 30px;
+}
+.coolRed {
+	background-color: #660000;
+}
+.redT {
+	color: #CD0000;
+	font-weight: bold;
+	text-shadow: 2px 2px 20px #FFFFFF;
+}
+.redT:hover {
+	color: #660000;
+}
+.redT1 {
+	color: #CD0000;
+	font-weight: bold;
+	text-shadow: 2px 2px 20px #FFFFFF;
+}
+#loginPage {
+	position: relative;
+	/* height: 600px; */
+}
+#loginBox {
+	position: relative;
+	width: 500px;
+	top: 50px;
+	left: 50%;
+	margin-left: -250px;
+	border-radius: 20px;
+	background-color: rgba(66, 0, 0, 0.7);
+	color: #FFFFFF;
+	padding: 25px;
+	font-size: 20px;
+}
+#logTitle {
+	position: relative;
+	padding-left: 0px;
+	left: 0px;
+	width: 100%;
+	text-align: center;
+	margin-top: -3px;
+}
+.whiteBack {
+	background-color: #FFFFFF;
+	color: #FFFFFF;
+}
+#logBack {
+	background: url(../images/starwars.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.buttonRed {
+	background-color: #EE0000;
+	border-radius: 10px;
+}
+.buttonRed:hover{
+	background-color: #AA0000;
+}
+.half {
+	position: relative;
+	width: 50%;
+	left: 0px;
+	text-align: center;
+}
+.takenBack {	
+	background: url(../images/taken.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.avengersBack {	
+	background: url(../images/avengers.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.batmanBack {	
+	background: url(../images/batman.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.supermanBack {	
+	background: url(../images/superman.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.rockyBack {	
+	background: url(../images/rocky.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+#pageContent {
+	position: relative;
+	width: 100%;
+	left: 0px;	
+	top: 30px;
+	padding-bottom: 200px;
+}
+#pageContentD {
+	position: relative;
+	width: 100%;
+	left: 0px;	
+	top: 150px;
+	padding-bottom: 200px;
+}
+.tall {
+	/* height: 600px; */
+}
+.thirdCol1 {
+	position: absolute;
+	left: 5%;
+	width: 42%;
+	text-align: center;
+	background-color: rgba(212, 212, 212, 0.7);
+	border-radius: 15px;
+}
+.thirdCol2 {
+	position: absolute;
+	left: 53%;
+	width: 42%;
+	text-align: center;
+	background-color: rgba(212, 212, 212, 0.7);
+	border-radius: 15px;
+}
+.bottom-down {
+	margin-bottom: 20px;
+}
+footer.movie {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+}
+footer.fixed {
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+}
+.movieList {
+	position: relative;
+	width: 86%;
+	left: 7%;
+	background-color: rgba(212, 212, 212, 0.7);
+	border-radius: 15px;
+	
+	/* height: 300px; */
+}
+.centerT {	
+	text-align: center;
+}
+.movieTitle {
+	font-size: 20px;
+}
+.boldT {
+	font-weight: bold;
+	
+}
+.noPad {
+	padding: 0px;
+}
+.lastW {
+	font-size: 12px;
+}
+.movieListFooter {
+	padding-bottom: -100px;
+	margin-bottom: -100px;
+}
+.movieAdd {
+	width: 100px;
+	height: 154px;
+	background-color: #660000;
+	border-radius: 10px;
+	border: solid 1px black;
+	margin: auto;
+}
+.moviePlus {
+	vertical-align: middle;
+	text-align: center;
+	font-size: 50px;
+	font-weight: bold;
+}
+.movieAddTab {
+	position: relative;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;	
+}
+.innerMovie:hover {
+	background-color: #660000;
+	border-radius: 10px;
+	opacity: 0.7;
+}
+.topDown {
+	padding-top: 30px;
+}
+.bottomD {
+	padding-bottom: 30px;
+}
+.dropF {
+	margin-top: 200px;
+}
+.invalidT {
+	width: 100%;
+	text-align: center;
+	display: none; 
+}
+#filter {
+	position: absolute;
+	top: 10px;
+	right: 10px;	
+	width: 75px;
+	text-align: center;
+	border-radius: 10px;
+	background-color: rgba(66, 0, 0, 0.7);
+	padding-top: 5px;
+	padding-bottom: 5px;
+	color: #FFFFFF;
+	border: solid 1px black;
+}
+#filter:hover {
+	background-color: rgba(66, 0, 0, 1);
+	font-weight: bold;
+}
