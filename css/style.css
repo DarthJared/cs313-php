@@ -90,6 +90,13 @@ footer.page-footer {
 	left: 50%;
 	margin-left: -150px; */
 }
+.centeredL {
+	position: relative;
+	text-align: center;
+	width: 300px;
+	left: 50%;
+	margin-left: -150px;
+}
 .material-icons.md-80 { 
 	position: relative;
 	font-size: 80px; 
