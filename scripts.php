@@ -95,19 +95,20 @@
 		$toJson = array();
 		$jsonStr = "{\"movies\" : [ "; 
 		$count = 0;
-		foreach ($db->query('SELECT m.name AS movie_name, m.img_link, g.name AS genre, m.length, ml.last_watched, ml.description FROM movie_lookup ml INNER JOIN user u ON u.id = ml.user_id INNER JOIN movie m ON ml.movie_id = m.id INNER JOIN genre g ON ml.genre_id = g.id WHERE ml.user_id = ' . $myId . ' ORDER BY m.name ASC;') as $row) {
+		foreach ($db->query('SELECT m.id AS mov_id, m.name AS movie_name, m.img_link, g.name AS genre, m.length, ml.last_watched, ml.description FROM movie_lookup ml INNER JOIN user u ON u.id = ml.user_id INNER JOIN movie m ON ml.movie_id = m.id INNER JOIN genre g ON ml.genre_id = g.id WHERE ml.user_id = ' . $myId . ' ORDER BY m.name ASC;') as $row) {
 			$mName = $row['movie_name'];
 			$link = $row['img_link'];
 			$genre = $row['genre'];
 			$length = $row['length'];
 			$watched = $row['last_watched'];
 			$description = $row['description'];
+			$id = $row['mov_id'];
 			
 			if ($count == 0) {
-				$jsonStr .= "{ \"name\":\"" . $mName . "\" , \"link\" : \"" . $link . "\" , \"genre\" : \"" . $genre . "\" , \"length\" : \"" . $length . "\" , \"last\" : \"" . $watched . "\" , \"description\" : \"" . $description . "\" }";
+				$jsonStr .= "{ \"name\":\"" . $mName . "\" , \"link\" : \"" . $link . "\" , \"genre\" : \"" . $genre . "\" , \"length\" : \"" . $length . "\" , \"last\" : \"" . $watched . "\" , \"description\" : \"" . $description . "\" , \"id\" : \"" . $id . "\" }";
 			}
 			else {
-				$jsonStr .= ",{ \"name\":\"" . $mName . "\" , \"link\" : \"" . $link . "\" , \"genre\" : \"" . $genre . "\" , \"length\" : \"" . $length . "\" , \"last\" : \"" . $watched . "\" , \"description\" : \"" . $description . "\" }";
+				$jsonStr .= ",{ \"name\":\"" . $mName . "\" , \"link\" : \"" . $link . "\" , \"genre\" : \"" . $genre . "\" , \"length\" : \"" . $length . "\" , \"last\" : \"" . $watched . "\" , \"description\" : \"" . $description . "\" , \"id\" : \"" . $id . "\" }";
 			}		
 			
 			$count++;
@@ -133,19 +134,20 @@
 		$toJson = array();
 		$jsonStr = "{\"movies\" : [ "; 
 		$count = 0;
-		foreach ($db->query('SELECT m.name AS movie_name, m.img_link, g.name AS genre, m.length, ml.last_watched, ml.description FROM (movie_lookup ml INNER JOIN user u ON u.id = ml.user_id INNER JOIN movie m ON ml.movie_id = m.id INNER JOIN genre g ON ml.genre_id = g.id) WHERE ml.user_id <> ' . $myId . ' ORDER BY m.name ASC;') as $row) {
+		foreach ($db->query('SELECT m.id AS mov_id, m.name AS movie_name, m.img_link, g.name AS genre, m.length, ml.last_watched, ml.description FROM (movie_lookup ml INNER JOIN user u ON u.id = ml.user_id INNER JOIN movie m ON ml.movie_id = m.id INNER JOIN genre g ON ml.genre_id = g.id) WHERE ml.user_id <> ' . $myId . ' ORDER BY m.name ASC;') as $row) {
 			$mName = $row['movie_name'];
 			$link = $row['img_link'];
 			$genre = $row['genre'];
 			$length = $row['length'];
 			$watched = $row['last_watched'];
 			$description = $row['description'];
+			$id = $row['mov_id'];
 			
 			if ($count == 0) {
-				$jsonStr .= "{ \"name\":\"" . $mName . "\" , \"link\" : \"" . $link . "\" , \"genre\" : \"" . $genre . "\" , \"length\" : \"" . $length . "\" , \"last\" : \"" . $watched . "\" , \"description\" : \"" . $description . "\" }";
+				$jsonStr .= "{ \"name\":\"" . $mName . "\" , \"link\" : \"" . $link . "\" , \"genre\" : \"" . $genre . "\" , \"length\" : \"" . $length . "\" , \"last\" : \"" . $watched . "\" , \"description\" : \"" . $description . "\" , \"id\" : \"" . $id . "\" }";
 			}
 			else {
-				$jsonStr .= ",{ \"name\":\"" . $mName . "\" , \"link\" : \"" . $link . "\" , \"genre\" : \"" . $genre . "\" , \"length\" : \"" . $length . "\" , \"last\" : \"" . $watched . "\" , \"description\" : \"" . $description . "\" }";
+				$jsonStr .= ",{ \"name\":\"" . $mName . "\" , \"link\" : \"" . $link . "\" , \"genre\" : \"" . $genre . "\" , \"length\" : \"" . $length . "\" , \"last\" : \"" . $watched . "\" , \"description\" : \"" . $description . "\" , \"id\" : \"" . $id . "\" }";
 			}		
 			
 			$count++;
