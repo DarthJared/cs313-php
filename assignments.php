@@ -29,7 +29,7 @@
 		<div class="section no-pad-bot" id="index-banner">
 			<div class="container">
 				<br><br>
-				<i class="material-icons md-100 aub-text centeredL">work</i>
+				<i class="material-icons md-100 aub-text">work</i>
 				<br><br>
 				<div class="assignList">
 					<p><a href="http://php-jbeagley.rhcloud.com/survey.php">PHP Survey</a></p>
@@ -38,7 +38,7 @@
 				</div>
 			</div>
 		</div>
-		<footer class="page-footer aub">
+		<footer class="page-footer aub fixed">
 			<div class="footer-copyright">
 				<div class="container up">
 					<i class="material-icons md-15">copyright</i>&nbsp; 2016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Made by Jared Beagley
