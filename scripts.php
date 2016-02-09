@@ -96,6 +96,9 @@
 		$dbPort = getenv('OPENSHIFT_MYSQL_DB_PORT'); 
 		$dbUser = getenv('OPENSHIFT_MYSQL_DB_USERNAME'); 
 		$dbPassword = getenv('OPENSHIFT_MYSQL_DB_PASSWORD');
+		
+		$openShiftVar = getenv('OPENSHIFT_MYSQL_DB_HOST'); 
+
 		if ($openShiftVar === null || $openShiftVar == "") {		
 			$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
 		}
@@ -139,6 +142,9 @@
 		$dbPort = getenv('OPENSHIFT_MYSQL_DB_PORT'); 
 		$dbUser = getenv('OPENSHIFT_MYSQL_DB_USERNAME'); 
 		$dbPassword = getenv('OPENSHIFT_MYSQL_DB_PASSWORD');
+		
+		$openShiftVar = getenv('OPENSHIFT_MYSQL_DB_HOST'); 
+
 		if ($openShiftVar === null || $openShiftVar == "") {		
 			$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
 		}
