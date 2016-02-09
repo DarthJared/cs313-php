@@ -30,6 +30,17 @@
 				}
 			});
 		}
+		$(window).ready(function() {
+			//alert("here");
+			$('#uname').keypress(function(e){
+				if(e.keyCode==13)
+					$('#loginBut').click();
+			});
+			$('#pword').keypress(function(e){
+				if(e.keyCode==13)
+					$('#loginBut').click();
+			});
+		});
 		</script>
 		<script src="js/materialize.js"></script>
 		<script src="js/init.js"></script>
@@ -54,9 +65,9 @@
 					&nbsp;Password:<br>
 					<input type="password" class="whiteBack" id="pword" placeholder="Password"><br>
 					<div class="row center">
-						<a href="comingSoon.php" id="download-button" class="btn-large waves-effect waves-red buttonRed lighten-1">Create Account</a>
+						<a href="comingSoon.php" id="createAccount" class="btn-large waves-effect waves-red buttonRed lighten-1">Create Account</a>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button type="button" onclick="login();" id="download-button" class="btn-large waves-effect waves-red buttonRed lighten-1 subButton">Login</button>
+						<input type="button" id="loginBut" class="btn-large waves-effect waves-red buttonRed lighten-1 subButton" value="Login" onclick="login();">
 					</div>
 					<div class="invalidT">INVALID USERNAME OR PASSWORD</div>
 				</form>

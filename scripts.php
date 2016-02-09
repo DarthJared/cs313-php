@@ -25,8 +25,15 @@
 		$dbPort = getenv('OPENSHIFT_MYSQL_DB_PORT'); 
 		$dbUser = getenv('OPENSHIFT_MYSQL_DB_USERNAME'); 
 		$dbPassword = getenv('OPENSHIFT_MYSQL_DB_PASSWORD');
-		$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
-		//$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
+		
+		$openShiftVar = getenv('OPENSHIFT_MYSQL_DB_HOST'); 
+
+		if ($openShiftVar === null || $openShiftVar == "") {		
+			$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
+		}
+		else {
+			$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
+		}
 		
 		foreach ($db->query('SELECT username, password FROM user') as $row) {
 			$user["'" . $row['username'] . "'"] = "'" . $row['password'] . "'";
@@ -89,8 +96,12 @@
 		$dbPort = getenv('OPENSHIFT_MYSQL_DB_PORT'); 
 		$dbUser = getenv('OPENSHIFT_MYSQL_DB_USERNAME'); 
 		$dbPassword = getenv('OPENSHIFT_MYSQL_DB_PASSWORD');
-		$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
-		//$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
+		if ($openShiftVar === null || $openShiftVar == "") {		
+			$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
+		}
+		else {
+			$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
+		}
 		
 		$toJson = array();
 		$jsonStr = "{\"movies\" : [ "; 
@@ -128,8 +139,12 @@
 		$dbPort = getenv('OPENSHIFT_MYSQL_DB_PORT'); 
 		$dbUser = getenv('OPENSHIFT_MYSQL_DB_USERNAME'); 
 		$dbPassword = getenv('OPENSHIFT_MYSQL_DB_PASSWORD');
-		$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
-		//$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
+		if ($openShiftVar === null || $openShiftVar == "") {		
+			$db = new PDO('mysql:host=127.0.0.1;dbname=movie_manager', $userN, $password);
+		}
+		else {
+			$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
+		}
 		
 		$toJson = array();
 		$jsonStr = "{\"movies\" : [ "; 
