@@ -15,13 +15,13 @@
 	}	
 ?>
 		function login() {
-			//alert("here");
+			////alert("here");
 			var username = $("#uname").val();
 			var password = $("#pword").val();
 			var url = "scripts.php";
 			data = {'action': 'login', 'username': username, 'password': password};
 			$.post(url, data, function (response) {
-				//alert(response);
+				////alert(response);
 				if (response == 1) {
 					window.location.replace("movies-home.php");	
 				}
@@ -31,7 +31,7 @@
 			});
 		}
 		$(window).ready(function() {
-			//alert("here");
+			////alert("here");
 			$('#uname').keypress(function(e){
 				if(e.keyCode==13)
 					$('#loginBut').click();
@@ -56,24 +56,26 @@
 				<a id="logo-container" href="index.php" class="brand-logo"><span class="whiteT">Movie Manager</span></a>				
 			</div>
 		</nav>
-		<div id="loginPage">
-			<div id="loginBox">
-				<form action="" method="post">
-					<h1 id="logTitle">LOGIN</h1>
-					&nbsp;Username:<br>
-					<input type="text" class="whiteBack" placeholder="Username" id="uname"><br>
-					&nbsp;Password:<br>
-					<input type="password" class="whiteBack" id="pword" placeholder="Password"><br>
-					<div class="row center">
-						<a href="comingSoon.php" id="createAccount" class="btn-large waves-effect waves-red buttonRed lighten-1">Create Account</a>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="button" id="loginBut" class="btn-large waves-effect waves-red buttonRed lighten-1 subButton" value="Login" onclick="login();">
-					</div>
-					<div class="invalidT">INVALID USERNAME OR PASSWORD</div>
-				</form>
+		<div id="pageContent">
+			<div id="loginPage">
+				<div id="loginBox">
+					<form action="" method="post">
+						<h1 id="logTitle">LOGIN</h1>
+						&nbsp;Username:<br>
+						<input type="text" class="whiteBack" placeholder="Username" id="uname"><br>
+						&nbsp;Password:<br>
+						<input type="password" class="whiteBack" id="pword" placeholder="Password"><br>
+						<div class="row center">
+							<a href="add-account.php" id="createAccount" class="btn-large waves-effect waves-red buttonRed lighten-1">Create Account</a>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="button" id="loginBut" class="btn-large waves-effect waves-red buttonRed lighten-1 subButton" value="Login" onclick="login();">
+						</div>
+						<div class="invalidT">INVALID USERNAME OR PASSWORD</div>
+					</form>
+				</div>
 			</div>
 		</div>
-		<footer class="page-footer coolRed movie">
+		<footer class="page-footer coolRed movie fixed">
 			<div class="footer-copyright">
 				<div class="container up">
 					<i class="material-icons md-15">copyright</i>&nbsp; 2016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Made by Jared Beagley inspired by Natasha Beagley

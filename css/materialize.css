@@ -9052,13 +9052,13 @@ textarea.materialize-textarea {
   Radio Buttons
 ***************/
 /* Remove default Radio Buttons */
-[type="radio"]:not(:checked),
+/* [type="radio"]:not(:checked),
 [type="radio"]:checked {
   position: absolute;
   left: -9999px;
   visibility: hidden;
 }
-
+ */
 [type="radio"]:not(:checked) + label,
 [type="radio"]:checked + label {
   position: relative;
@@ -9472,7 +9472,7 @@ input[type=checkbox]:not(:disabled) ~ .lever:active:after {
 }
 
 select {
-  display: none;
+  /* display: none; */
 }
 
 select.browser-default {

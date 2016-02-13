@@ -20,7 +20,7 @@
 	}
 ?>
 		function logout() {
-			//alert("here");
+			////alert("here");
 			var username = $("#uname").val();
 			var password = $("#pword").val();
 			var url = "scripts.php";
@@ -35,19 +35,19 @@
 			var url = "scripts.php";
 			data = {'action': 'notMyMovies'};
 			$.post(url, data, function (response) {
-				//alert(response);
+				////alert(response);
 				var jsonResults = JSON.parse(response);
-				//alert(jsonResults.movies[0].name + " " + jsonResults.movies[0].link + " " + jsonResults.movies[0].genre + " " + jsonResults.movies[0].length + " " + jsonResults.movies[0].last + " " + jsonResults.movies[0].description);
+				////alert(jsonResults.movies[0].name + " " + jsonResults.movies[0].link + " " + jsonResults.movies[0].genre + " " + jsonResults.movies[0].length + " " + jsonResults.movies[0].last + " " + jsonResults.movies[0].description);
 				
 				var col = 0;
 				var rowT = "";
 				
 				for (var i = 0; i < jsonResults.movies.length; i++) {
-					//alert("we're in");
+					////alert("we're in");
 					//add a row to the table
 					rowT += "<td width=\"20%\"><table class=\"innerMovie\"><tr><td class=\"movieTitle centerT boldT noPad\">" + jsonResults.movies[i].name + "</td></tr><tr><td class=\"centerT noPad\"><img src=\"" + jsonResults.movies[i].link + "\" width=\"100\"></td></tr></table></td>";
 					col++;	
-					//alert(rowT);
+					////alert(rowT);
 					if (col > 4) {
 						var tabAdd = document.getElementById("movieTab");
 						var tabRow = tabAdd.insertRow(-1);
@@ -83,7 +83,7 @@
 					<li><a href="popmovies.php">Popular Movies</a></li>
 					<li onclick="logout()"><a>Logout</a></li>
 				</ul>
-				<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons white">menu</i></a>
+				<!-- <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons white">menu</i></a>-->
 			</div>			
 		</nav>
 		<div id="pageContent" class="tall">

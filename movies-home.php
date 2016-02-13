@@ -18,15 +18,16 @@
 	else {
 		echo "window.location.replace('movies.php');";
 	}
-	// echo "alert('" . $_SESSION['userId'] . "');";
+	// echo "//alert('" . $_SESSION['userId'] . "');";
 ?>
 		function logout() {
-			//alert("here");
+			////alert("here");
 			var username = $("#uname").val();
 			var password = $("#pword").val();
 			var url = "scripts.php";
 			data = {'action': 'logout'};
 			$.post(url, data, function (response) {
+				////alert(response);
 				window.location.replace("movies.php");	
 			});
 		}
@@ -48,8 +49,7 @@
 					<li><a href="mymovies.php">My Movies</a></li>
 					<li><a href="popmovies.php">Popular Movies</a></li>
 					<li onclick="logout()"><a>Logout</a></li>
-				</ul>
-				<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons white">menu</i></a>
+				</ul
 			</div>			
 		</nav>
 		<div id="pageContentD" class="tall redT">
@@ -62,7 +62,7 @@
 				<h2 class="center"><i class="material-icons md-100">thumbs_up_down</i></h2>
 			</div></a>
 		</div>
-		<footer class="page-footer coolRed movie">
+		<footer class="page-footer coolRed movie fixed">
 			<div class="footer-copyright">
 				<div class="container up">
 					<i class="material-icons md-15">copyright</i>&nbsp; 2016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Made by Jared Beagley inspired by Natasha Beagley
