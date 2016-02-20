@@ -5,6 +5,10 @@
  *
  * Made By MaterializeCSS.com
  */
+ 
+body {
+	overflow-x: hidden;
+}
 .coverBack {
 	position: fixed;
 	left: 0px;
@@ -184,7 +188,7 @@ footer.page-footer {
 	color: #FFFFFF;
 }
 #logBack {
-	background: url(http://www.starwarsnewsnet.com/wp-content/uploads/2015/10/tfa_poster_wide_header_adb92fa0.jpeg) no-repeat center center fixed; 
+	background: url(../images/starwars.jpg) no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -204,14 +208,14 @@ footer.page-footer {
 	text-align: center;
 }
 .takenBack {	
-	background: url(http://www.moustachemagazine.com/wp-content/uploads/2015/01/taken_3_2015_movie-3840x2160.jpg) no-repeat center center fixed; 
+	background: url(../images/taken.jpg) no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 }
 .avengersBack {	
-	background: url(http://moviehole.net/img/avengerswallpaper.jpg) no-repeat center center fixed; 
+	background: url(../images/avengers.jpg) no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -225,21 +229,21 @@ footer.page-footer {
 	background-size: cover;
 }
 .supermanBack {	
-	background: url(http://robot6.comicbookresources.com/wp-content/uploads/2013/06/manofsteel1.jpg) no-repeat center center fixed; 
+	background: url(../images/superman.jpg) no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 }
 .rockyBack {	
-	background: url(http://cdn.collider.com/wp-content/uploads/2015/11/rocky-2.jpg) no-repeat center center fixed; 
+	background: url(../images/rocky.jpg) no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 }
 .bondBack {	
-	background: url(http://shilpaahuja.com/wp-content/uploads/2015/11/daniel-craig-james-bond-suit-black-poster-pinstripe.jpg?8d5675) no-repeat center center fixed; 
+	background: url(../images/bond.jpg) no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -462,4 +466,34 @@ footer.fixed {
 .halfW {
 	width: 50%;
 }
-	
+.filterButton {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+}
+.filterOptions {
+	position: fixed;
+	width: 300px;
+	height: 100%;
+	background-color: rgba(212, 212, 212, 0.95);
+	top: 0px;
+	right: -300px;
+	z-index:99999;
+}
+.filterInfo {
+	position: relative;
+	width: 94%;
+	left: 4%;
+	top: 8%;
+	height: 87%;
+	overflow-y: scroll;	
+}
+.filterTitle {
+	font-size: 22px;
+}
+.disabledOption {
+	color: #AAAAAA;
+}
+.openOption {
+	color: #000000;
+}

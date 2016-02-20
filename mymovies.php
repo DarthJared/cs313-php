@@ -22,12 +22,16 @@
 		var genres = Array();
 		var allGenres;
 		var myMovieList;
+		var myDisplayList;
 		var commentBox;
 		var selectedId;
 		var movIndex;
+		var useGenre = false;
+		var notWatch = false;
+		var watch = false;
+		var noChange = true;
 		
 		function logout() {
-			////alert("here");
 			var username = $("#uname").val();
 			var password = $("#pword").val();
 			var url = "scripts.php";
@@ -37,26 +41,22 @@
 			});
 		}
 		
-		function getMovies() {
-			
+		function getMovies() {			
 			var username = $("#uname").val();
 			var password = $("#pword").val();
 			var url = "scripts.php";
 			data = {'action': 'myMovies'};
 			$.post(url, data, function (response) {
-				////alert(response);
 				var jsonResults = JSON.parse(response);
 				myMovieList = jsonResults;
-				////alert(jsonResults.movies[0].name + " " + jsonResults.movies[0].link + " " + jsonResults.movies[0].genre + " " + jsonResults.movies[0].length + " " + jsonResults.movies[0].last + " " + jsonResults.movies[0].description + " " + jsonResults.movies[0].id );
+				myDisplayList = JSON.parse(response);
 				
 				var col = 1;
 				var rowCount = 0;
 				var rowT = "";
 				
 				for (var i = 0; i < jsonResults.movies.length; i++) {
-					////alert("we're in");
 					if (rowCount == 0) {
-						//add cells to first row
 						var row = document.getElementById("firstRow");
 						var name = row.insertCell(-1);
 						
@@ -69,10 +69,8 @@
 							name.innerHTML = adding;
 						}
 						col++;
-						////alert(col);
 					}
 					else {
-						//add a row to the table
 						if (!jsonResults.movies[i].last || 0 === jsonResults.movies[i].last) {
 							rowT += "<td width=\"20%\"><table class=\"innerMovie\" onclick=\"showInfo($(this))\"><tr><td class=\"movieTitle centerT boldT noPad\">" + jsonResults.movies[i].name + "</td></tr><tr><td class=\"centerT noPad\"><input type=\"text\" class=\"movieId\" value=\"" + jsonResults.movies[i].id + "\" style=\"display:none\"><img src=\"" + jsonResults.movies[i].link + "\" width=\"100\"></td></tr><tr><td class=\"centerT noPad lastW\">Not Yet Watched!</td></tr></table></td>";							
 						}
@@ -90,8 +88,7 @@
 					if (col > 4) {
 						col = 0;
 						rowCount++;
-					}
-					
+					}					
 				}
 				if (col != 0) {
 					var tabAdd = document.getElementById("movieTab");
@@ -100,13 +97,22 @@
 				}
 				for (var i = 0; i < jsonResults.movies.length; i++) {
 					if (contains(genres, jsonResults.movies[i].genre)) {
-						////alert("here");
 					}
 					else {
 						genres.push(jsonResults.movies[i].genre);
 					}
 				}
-				////alert(genres);
+				
+				var genreList = [];
+				var genreChecks = "";
+				for (var i = 0; i < myMovieList.movies.length; i++) {
+					////alert(myMovieList.movies[i].genre);
+					if (jQuery.inArray(myMovieList.movies[i].genre, genreList).toString() == "-1") {
+						genreList.push(myMovieList.movies[i].genre);
+						genreChecks += "<br><span class=\"disabledOption\"><input type=\"checkbox\" class=\"genreSelect\" name=\"genreSelector\" value=\"" + myMovieList.movies[i].genre + "\" disabled>&nbsp;" + myMovieList.movies[i].genre + "</span>";
+					}
+				}
+				$(".filterGenre").html(genreChecks);	
 			});	
 		}
 		var isOpen = false;
@@ -127,17 +133,19 @@
 			return false;
 		}
 		function closeInfo() {
-			window.location.replace('mymovies.php');
-			//$(".coverBack").hide();
+			$(".adderBack").hide();
 		}
-		// function adjustPic() {
-			// var percent = screen.height * 0.7;
-			// $(".shortPic").css("height", percent);
-		// }
+		function closeInfo2() {
+			if(noChange) {
+				$(".coverBack").hide();
+			}
+			else {
+				window.location.replace("mymovies.php");
+			}
+		}
 		function showInfo(movie) {
 			$(".coverBack").show();
-			var name = movie.find(".movieTitle").text();
-			////alert(name);			
+			var name = movie.find(".movieTitle").text();			
 			for (var i = 0; i < myMovieList.movies.length; i++) {
 				if (name == myMovieList.movies[i].name) {
 					movIndex = i;
@@ -176,8 +184,6 @@
 		}
 		function editCom() {
 			if (commentBox) {
-				//update comments in db
-				//refresh comments displayed
 				var com = $(".commentsInput").val();
 				var url = "scripts.php";
 				data = {'action': 'addComment', 'comment': com, 'movieId': myMovieList.movies[movIndex].id };
@@ -192,22 +198,20 @@
 				$(".commentsText").hide();
 				commentBox = true;
 			}
+			noChange = false;
 		}
 		function watched() {
+			noChange = false;
 			var name = $(".movieInfoTitle").text();
-			////alert(name);
 			var com = $(".commentsInput").val();
 			var url = "scripts.php";
 			var today = new Date();
 			data = {'action': 'watch', 'movieId': myMovieList.movies[movIndex].id, 'date': today.toDateString() };
 			$.post(url, data, function (response) {
-				////alert(response);
 				$(".movInfLast").text("Last Watched: " + today.toDateString());
 			});			
-		}
-		
+		}		
 		function addMovie() {
-			////alert("im in");
 			var nmName = $(".newMovName").val();
 			var nmLength = $(".hours").val() + ":" + $(".minutes").val();
 			var nmLink = $(".newImg").val();
@@ -215,20 +219,16 @@
 			if (nmGenre == "Other") {
 				var nmGenreName = $(".newGenre").val();
 				if (nmGenreName.length > 0) {
-					////alert("im in");
 					if (nmName.length > 0) {
 						if (nmLink.length > 0) {
-							//query to add to genre and genre lookup
 							var url = "scripts.php";
 							var data = {'action': 'addGenre', 'genreName': nmGenreName};
-							$.post(url, data, function (response) {
-								////alert(response);							
+							$.post(url, data, function (response) {						
 							});	 
 							
 							var data2 = {'action': 'addMovie', 'genreName': nmGenreName, 'length': nmLength, 'link': nmLink, 'name': nmName };
 							$.post(url, data2, function (response) {
-								////alert(response);	
-								closeInfo();								
+								window.location.replace("mymovies.php");								
 							});
 						}
 						else {
@@ -242,8 +242,7 @@
 						}
 					}
 				}
-				else {
-					//show error that must enter genre name			
+				else {	
 					$(".newGenre").attr("placeholder", "Please Enter a Valid Genre...");		
 					if (nmName.length <= 0) {			
 						$(".newMovName").attr("placeholder", "Please Enter a Valid Movie Name...");						
@@ -256,13 +255,10 @@
 			else {
 				if (nmName.length > 0) {
 					if (nmLink.length > 0) {
-						//query to add to genre and genre lookup
-						var url = "scripts.php"; 
-						
+						var url = "scripts.php"; 						
 						var data2 = {'action': 'addMovie', 'genreName': nmGenre, 'length': nmLength, 'link': nmLink, 'name': nmName };
-						$.post(url, data2, function (response) {
-							////alert(response);	
-							closeInfo();
+						$.post(url, data2, function (response) {	
+							window.location.replace("mymovies.php");
 						});	 
 					}
 					else {
@@ -281,9 +277,7 @@
 			var url = "scripts.php";
 			data = {'action': 'getGenre'};
 			$.post(url, data, function (response) {
-				////alert(response);
 				var jsonResults = JSON.parse(response);
-				////alert(allGenres);
 				allGenres = jsonResults;
 				var genreL = "";
 				for (var i = 0; i < allGenres.genres.length; i++) {
@@ -292,25 +286,315 @@
 				$(".genreList").html(genreL);
 			});
 			$(".adderBack").show();
-			////alert(genres);
-			
 		}		
 		function deleteMov() {
 			var url = "scripts.php";
 			data = { 'action': 'delete', 'movieId': myMovieList.movies[movIndex].id };
 			$.post(url, data, function (response) {
-				////alert(response);
-				closeInfo();
+				window.location.replace("mymovies.php");
 			});
 		}
-		
-		// $(window).ready(function() {
-			// ////alert("here");
-			// $(".innerMovie").click(function() {
-				// //alert("here");
-				// $(".coverBack").show();
-			// });
-		// });
+		function filter() {
+			$(".filterOptions").animate({right: '0px'});
+		}
+		function closeFilter() {			
+			$(".filterOptions").animate({right: '-300px'});
+		}
+		function inputFilter() {
+			////alert("here");			
+			var checkedVals = [];
+			
+			$(".movieList").html("<div class=\"filterButton\"><input type=\"button\" class=\"btn-large waves-effect waves-red buttonRed lighten-1 subButton\" value=\"Filter\" onclick=\"filter();\"></div><h2 class=\"centerT topDown\">My Movies</h2><table class=\"movieTable\" id=\"movieTab\"><tr id=\"firstRow\"><td width=\"20%\" onclick=\"showAdder()\"><table class=\"innerMovie\"><tr><td class=\"movieTitle centerT boldT noPad\">ADD MOVIE</td></tr><tr><td class=\"centerT noPad\"><div class=\"movieAdd\"><table class=\"movieAddTab\" ><tr><td class=\"moviePlus\">+</td></tr></table></div></td></tr><tr><td class=\"centerT noPad lastW\"></td></tr></table></td></tr></table>");
+			
+			if (useGenre) {
+				myDisplayList.movies = [];
+				////alert(myMovieList.movies.length);
+				$("input[name=genreSelector]:checked").each(function() {
+					checkedVals.push($(this).val());
+					////alert($(this).val());
+				});
+				////alert(myMovieList.movies.length);
+				for (var i = 0; i < myMovieList.movies.length; i++) {
+					for (var j = 0; j < checkedVals.length; j++) {
+						////alert(checkedVals[j] + " " + myMovieList.movies[i].genre);
+						if (checkedVals[j] == myMovieList.movies[i].genre) {
+							myDisplayList.movies.push(myMovieList.movies[i]);			
+						}
+					}
+				}			
+			}
+			////alert("here");
+			
+			var today = new Date();
+			var dd = parseInt(today.getDate());
+			var mm = parseInt(today.getMonth()+1);
+			var yyyy = parseInt(today.getFullYear());
+			
+			if (notWatch) {
+				var option = $(".notWatched").val();
+				
+				for (var i = 0; i < myDisplayList.movies.length; i++) {
+					var dates = myDisplayList.movies[i].last.split(" ");
+					var monthStr = dates[1];
+					var extMonthStr;
+					var month;
+					var daysMonth;
+					if (monthStr == "Jan") {
+						month = 1;
+						extMonthStr = "January";
+					}
+					else if (monthStr == "Feb") {
+						month = 2;
+						extMonthStr = "February";
+					}
+					else if (monthStr == "Mar") {
+						month = 3;
+						extMonthStr = "March";
+					}
+					else if (monthStr == "Apr") {
+						month = 4;
+						extMonthStr = "April";
+					}
+					else if (monthStr == "May") {
+						month = 5;
+						extMonthStr = "May";
+					}
+					else if (monthStr == "Jun") {
+						month = 6;
+						extMonthStr = "June";
+					}
+					else if (monthStr == "Jul") {
+						month = 7;
+						extMonthStr = "July";
+					}
+					else if (monthStr == "Aug") {
+						month = 8;
+						extMonthStr = "August";
+					}
+					else if (monthStr == "Sep") {
+						month = 9;
+						extMonthStr = "September";
+					}
+					else if (monthStr == "Oct") {
+						month = 10;
+						extMonthStr = "October";
+					}
+					else if (monthStr == "Nov") {
+						month = 11;
+						extMonthStr = "November";
+					}
+					else if (monthStr == "Dec") {
+						month = 12;
+						extMonthStr = "December";
+					}
+					var day = parseInt(dates[2]);
+					var year = parseInt(dates[3]);	
+					var monthDate = new Date(extMonthStr + " " + day.toString() + ", " + year.toString() + " 00:00:00");
+					
+					var dateDif = today.getTime() - monthDate.getTime();
+					//alert(dateDif);
+					var dayMils = 1000 * 60 * 60 * 24;
+					
+					if (option == 0) {
+						if (dateDif < dayMils) {
+							myDisplayList.movies.splice(i, 1);
+							i--;
+						}
+					}
+					else if (option == 1) {
+						if (dateDif < (dayMils * 2)) {
+							myDisplayList.movies.splice(i, 1);
+							i--;
+						}
+					}
+					else if (option == 2) {
+						if (dateDif < (dayMils * 7)) {
+							myDisplayList.movies.splice(i, 1);
+							i--;
+						}
+					}
+					else if (option == 3) {
+						if (dateDif < (dayMils * 30)) {
+							myDisplayList.movies.splice(i, 1);
+							i--;
+						}
+					}
+				}
+			}
+			if (watch) {
+				var option = $(".watched").val();
+				
+				for (var i = 0; i < myDisplayList.movies.length; i++) {
+					////alert(myDisplayList.movies[i].last.toString());
+					if (myDisplayList.movies[i].last.length < 1) {
+						////alert("null");
+						myDisplayList.movies.splice(i, 1);
+						i--;
+					}
+					else {
+						var dates = myDisplayList.movies[i].last.split(" ");
+						var monthStr = dates[1];
+						var extMonthStr;
+						var month;
+						var daysMonth;
+						if (monthStr == "Jan") {
+							extMonthStr = "January";
+						}
+						else if (monthStr == "Feb") {
+							extMonthStr = "February";
+						}
+						else if (monthStr == "Mar") {
+							extMonthStr = "March";
+						}
+						else if (monthStr == "Apr") {
+							extMonthStr = "April";
+						}
+						else if (monthStr == "May") {
+							extMonthStr = "May";
+						}
+						else if (monthStr == "Jun") {
+							extMonthStr = "June";
+						}
+						else if (monthStr == "Jul") {
+							extMonthStr = "July";
+						}
+						else if (monthStr == "Aug") {
+							extMonthStr = "August";
+						}
+						else if (monthStr == "Sep") {
+							extMonthStr = "September";
+						}
+						else if (monthStr == "Oct") {
+							extMonthStr = "October";
+						}
+						else if (monthStr == "Nov") {
+							extMonthStr = "November";
+						}
+						else if (monthStr == "Dec") {
+							extMonthStr = "December";
+						}
+						var day = parseInt(dates[2]);
+						var year = parseInt(dates[3]);	
+						var monthDate = new Date(extMonthStr + " " + day.toString() + ", " + year.toString() + " 00:00:00");						
+						var dateDif = today.getTime() - monthDate.getTime();
+						////alert(dateDif);
+						var dayMils = 1000 * 60 * 60 * 24;
+						
+						if (option == 0) {
+							if (dateDif > dayMils) {
+								myDisplayList.movies.splice(i, 1);
+								i--;
+							}
+						}
+						else if (option == 1) {
+							if (dateDif > (dayMils * 2)) {
+								myDisplayList.movies.splice(i, 1);
+								i--;
+							}
+						}
+						else if (option == 2) {
+							if (dateDif > (dayMils * 7)) {
+								myDisplayList.movies.splice(i, 1);
+								i--;
+							}
+						}
+						else if (option == 3) {
+							if (dateDif > (dayMils * 30)) {
+								myDisplayList.movies.splice(i, 1);
+								i--;
+							}
+						}
+					}
+				}
+			}
+			if (!watch && !notWatch && !useGenre) {
+				myDisplayList.movies = [];
+				for (var i = 0; i < myMovieList.movies.length; i++) {
+					myDisplayList.movies.push(myMovieList.movies[i]);
+				}
+			}
+			
+			var col = 1;
+			var rowCount = 0;
+			var rowT = "";			
+			
+			for (var i = 0; i < myDisplayList.movies.length; i++) {
+				////alert("here");
+				if (rowCount == 0) {
+					var row = document.getElementById("firstRow");
+					var name = row.insertCell(-1);
+					
+					if (!myDisplayList.movies[i].last || 0 === myDisplayList.movies[i].last) {
+						var adding = "<table class=\"innerMovie\" onclick=\"showInfo($(this))\"><tr><td class=\"movieTitle centerT boldT noPad\">" + myDisplayList.movies[i].name + "</td></tr><tr><td class=\"centerT noPad\"><input type=\"text\" class=\"movieId\" value=\"" + myDisplayList.movies[i].id + "\" style=\"display:none\"><img src=\"" + myDisplayList.movies[i].link + "\" width=\"100\"></td></tr><tr><td class=\"centerT noPad lastW\">Not Yet Watched!</td></tr></table>";
+						name.innerHTML = adding;							
+					}
+					else {
+						var adding = "<table class=\"innerMovie\" onclick=\"showInfo($(this))\"><tr><td class=\"movieTitle centerT boldT noPad\">" + myDisplayList.movies[i].name + "</td></tr><tr><td class=\"centerT noPad\"><input type=\"text\" class=\"movieId\" value=\"" + myDisplayList.movies[i].id + "\" style=\"display:none\"><img src=\"" + myDisplayList.movies[i].link + "\" width=\"100\"></td></tr><tr><td class=\"centerT noPad lastW\">Last Watched: " + myDisplayList.movies[i].last + "</td></tr></table>";
+						name.innerHTML = adding;
+					}
+					col++;
+				}
+				else {
+					if (!myDisplayList.movies[i].last || 0 === myDisplayList.movies[i].last) {
+						rowT += "<td width=\"20%\"><table class=\"innerMovie\" onclick=\"showInfo($(this))\"><tr><td class=\"movieTitle centerT boldT noPad\">" + myDisplayList.movies[i].name + "</td></tr><tr><td class=\"centerT noPad\"><input type=\"text\" class=\"movieId\" value=\"" + myDisplayList.movies[i].id + "\" style=\"display:none\"><img src=\"" + myDisplayList.movies[i].link + "\" width=\"100\"></td></tr><tr><td class=\"centerT noPad lastW\">Not Yet Watched!</td></tr></table></td>";							
+					}
+					else {
+						rowT += "<td width=\"20%\"><table class=\"innerMovie\" onclick=\"showInfo($(this))\"><tr><td class=\"movieTitle centerT boldT noPad\">" + myDisplayList.movies[i].name + "</td></tr><tr><td class=\"centerT noPad\"><input type=\"text\" class=\"movieId\" value=\"" + myDisplayList.movies[i].id + "\" style=\"display:none\"><img src=\"" + myDisplayList.movies[i].link + "\" width=\"100\"></td></tr><tr><td class=\"centerT noPad lastW\">Last Watched: " + myDisplayList.movies[i].last + "</td></tr></table></td>";
+					}
+					col++;	
+					if (col > 4) {
+						var tabAdd = document.getElementById("movieTab");
+						var tabRow = tabAdd.insertRow(-1);
+						tabRow.innerHTML = rowT;
+						rowT = "";
+					}
+				}
+				if (col > 4) {
+					col = 0;
+					rowCount++;
+				}					
+			}
+			if (col != 0) {
+				var tabAdd = document.getElementById("movieTab");
+				var tabRow = tabAdd.insertRow(-1);
+				tabRow.innerHTML = rowT;
+			}
+			
+			
+			$(".filterOptions").animate({right: '-300px'});
+		}
+		function useGenres() {
+			if (useGenre) {
+				$(".openOption").attr("class", "disabledOption");
+				$(".genreSelect").prop("disabled", true).attr("checked", false);
+				useGenre = false;
+			}
+			else {
+				$(".disabledOption").attr("class", "openOption");
+				$(".genreSelect").prop("disabled", false);
+				useGenre = true;
+			}
+		}
+		function useNotWatched() {
+			if (notWatch) {
+				$(".notWatched").prop("disabled", true);
+				notWatch = false;
+			}
+			else {
+				$(".notWatched").prop("disabled", false);
+				notWatch = true;
+			}
+		}
+		function useWatched() {
+			if (watch) {
+				$(".watched").prop("disabled", true);
+				watch = false;
+			}
+			else {
+				$(".watched").prop("disabled", false);
+				watch = true;
+			}
+		}
 		</script>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -330,12 +614,13 @@
 					<li><a href="popmovies.php">Popular Movies</a></li>
 					<li onclick="logout()"><a>Logout</a></li>
 				</ul>
-				<!--<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons white">menu</i></a>-->
 			</div>			
 		</nav>
 		<div id="pageContent" class="tall">
 			<div class="movieList">
-				<!--<div id="filter" onclick="openFilter()">FILTER</div>-->
+				<div class="filterButton">
+					<input type="button" class="btn-large waves-effect waves-red buttonRed lighten-1 subButton" value="Filter" onclick="filter();">
+				</div>
 				<h2 class="centerT topDown">My Movies</h2>
 				<table class="movieTable" id="movieTab">
 					<tr id="firstRow">
@@ -506,7 +791,38 @@
 						</td>
 					</tr>
 				</table>
-				<span onclick="closeInfo()"><i class="material-icons close">highlight_off</i></span>
+				<span onclick="closeInfo2()"><i class="material-icons close">highlight_off</i></span>
+			</div>
+		</div>
+		<div class="filterOptions">			
+			<span onclick="closeFilter()"><i class="material-icons close">highlight_off</i></span>
+			<div class="filterInfo">
+				<span class="filterTitle" onclick="">GENRES&nbsp;&nbsp;<input type="checkbox" value="actionGenre" onclick="useGenres();"></span>
+				<div class="filterGenre">
+				</div>
+				<br>
+				<br>
+				<span class="filterTitle">NOT WATCHED:&nbsp;&nbsp;<input type="checkbox" value="actionGenre" onclick="useNotWatched();"></span>
+				<br>
+				<select class="notWatched" disabled>
+					<option value="0">The Last Day</option>
+					<option value="1">The Last Two Days</option>
+					<option value="2">The Last Week</option>
+					<option value="3">The Last Month</option>
+				</select>
+				<br>
+				<br>
+				<span class="filterTitle">WATCHED:&nbsp;&nbsp;<input type="checkbox" value="actionGenre" onclick="useWatched();"></span>
+				<br>
+				<select class="watched" disabled>
+					<option>Today</option>
+					<option>Yesterday</option>
+					<option>This Week</option>
+					<option>This Month</option>
+				</select>
+				<br>
+				<br>
+				<input type="button" class="btn-large waves-effect waves-red buttonRed lighten-1 subButton" value="Filter" onclick="inputFilter();">
 			</div>
 		</div>
 		<footer class="page-footer coolRed fixed">

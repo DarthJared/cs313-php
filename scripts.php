@@ -35,8 +35,8 @@
 		case 'addUser':
 			createAccount();
 			break;
-		case 'getUsernames':
-			getUsers();
+		case 'checkUser':
+			checkUser();
 			break;
 	}
 	
@@ -59,47 +59,40 @@
 			$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
 		}
 		
-		foreach ($db->query('SELECT username, password FROM user') as $row) {
-			$user["'" . $row['username'] . "'"] = "'" . $row['password'] . "'";
-		    //echo $row['username'] . " " . $row['password'];
-		
-		}
-		
-		//echo $user;
+		////FIX/////
+		require 'password.php';
 		
 		$uName = $_POST['username'];
-		try {
-			$userNa = "";
-			if (isset($user["'" . $uName . "'"]))
-			{
-				$userNa = $user["'" . $uName . "'"];
-			}
-			else {
-				echo "0";
-				exit;
-			}
-			$pass = "'" . $_POST['password'] . "'";
-			//echo $userNa;
-			//echo $uName;
-			//echo $pass;
-			$isAuth = false;
-			if ($userNa == $pass) {
-				$isAuth = true;
-				echo "1";
-				session_start();
-				$_SESSION["isLoggedIn"] = true;
-				$uId = "";
-				foreach ($db->query('SELECT id FROM user WHERE username = \'' . $uName . '\';') as $row) {
-					$uId = $row['id'];
-				}
-				$_SESSION["userId"] = $uId;
-			}
-			else {
-				echo "0";
-			}		
-			exit; 
+		$stmt = $db->prepare('SELECT username, password FROM user WHERE username=:uname;');
+		$stmt->bindValue(':uname', $uName, PDO::PARAM_STR);
+		$stmt->execute();
+		$passwordHash = "";
+		
+		while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$passwordHash = $row['password'];		
 		}
-		catch (Exception $e) {
+		
+		$unhashed = $_POST['password'];		
+		
+		if (password_verify($unhashed, $passwordHash)) {
+			$isAuth = true;
+			echo "1";
+			session_start();
+			$_SESSION["isLoggedIn"] = true;
+			$uId = "";
+			
+			//bind prepared statement
+			$stmt = $db->prepare('SELECT id FROM user WHERE username=:user;');
+			$stmt->bindValue(':user', $uName, PDO::PARAM_STR);
+			$stmt->execute();
+			
+			while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+				$uId = $row['id'];
+			}
+			$_SESSION["userId"] = $uId;
+			exit;
+		}
+		else {
 			echo "0";
 			exit;
 		}
@@ -133,7 +126,12 @@
 		$toJson = array();
 		$jsonStr = "{\"movies\" : [ "; 
 		$count = 0;
-		foreach ($db->query('SELECT ml.id AS mov_id, m.name AS movie_name, m.img_link, g.name AS genre, m.length, ml.last_watched, ml.description FROM movie_lookup ml INNER JOIN user u ON u.id = ml.user_id INNER JOIN movie m ON ml.movie_id = m.id INNER JOIN genre g ON ml.genre_id = g.id WHERE ml.user_id = ' . $myId . ' ORDER BY m.name ASC;') as $row) {
+		
+		$stmt = $db->prepare('SELECT ml.id AS mov_id, m.name AS movie_name, m.img_link, g.name AS genre, m.length, ml.last_watched, ml.description FROM movie_lookup ml INNER JOIN user u ON u.id = ml.user_id INNER JOIN movie m ON ml.movie_id = m.id INNER JOIN genre g ON ml.genre_id = g.id WHERE ml.user_id=:id;');
+		$stmt->bindValue(':id', $myId, PDO::PARAM_INT);
+		$stmt->execute();
+		
+		while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$mName = $row['movie_name'];
 			$link = $row['img_link'];
 			$genre = $row['genre'];
@@ -179,6 +177,7 @@
 		$toJson = array();
 		$jsonStr = "{\"movies\" : [ "; 
 		$count = 0;
+		
 		foreach ($db->query('SELECT ml.id AS mov_id, m.name AS movie_name, m.img_link, g.name AS genre, m.length, ml.last_watched, ml.description, ml.user_id AS user_id FROM (movie_lookup ml INNER JOIN user u ON u.id = ml.user_id INNER JOIN movie m ON ml.movie_id = m.id INNER JOIN genre g ON ml.genre_id = g.id) GROUP BY m.name HAVING COUNT(m.id) = 1') as $row) {
 			if ($row['user_id'] != $myId) {
 				$mName = $row['movie_name'];
@@ -187,7 +186,6 @@
 				$length = $row['length'];
 				$watched = $row['last_watched'];
 				$description = $row['description'];
-				//echo $description;
 				$id = $row['mov_id'];
 				
 				if ($count == 0) {
@@ -227,7 +225,11 @@
 		
 		$movLid = $_POST['movieId'];
 		$comm = $_POST['comment'];
-		$db->query('UPDATE movie_lookup SET description=\'' . $comm . '\' WHERE id=' . $movLid . ';' );
+		
+		$stmt = $db->prepare('UPDATE movie_lookup SET description=:describe WHERE id=:movId;');
+		$stmt->bindValue(':describe', $comm, PDO::PARAM_STR);
+		$stmt->bindValue(':movId', $movLid, PDO::PARAM_INT);
+		$stmt->execute();
 		exit;
 	}
 	
@@ -252,7 +254,12 @@
 		}
 		$movLid = $_POST['movieId'];
 		$dateW = $_POST['date'];
-		$db->query('UPDATE movie_lookup SET last_watched=\'' . $dateW . '\' WHERE id=' . $movLid . ';' );
+		
+		$stmt = $db->prepare('UPDATE movie_lookup SET last_watched=:date WHERE id=:movId;');
+		$stmt->bindValue(':date', $dateW, PDO::PARAM_STR);
+		$stmt->bindValue(':movId', $movLid, PDO::PARAM_INT);
+		$stmt->execute();
+		
 		exit;
 	}
 	
@@ -277,9 +284,14 @@
 			$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
 		}
 		
-		$db->query('INSERT INTO genre(name) VALUES(\'' . $genreName . '\');' );
-		$db->query('INSERT INTO genre_lookup(user_id, genre_id) VALUES(' . $myId . ', ' . $db->lastInsertId() . ');' );
-		//echo $genreName;
+		$stmt = $db->prepare('INSERT INTO genre(name) VALUES(:genre);');
+		$stmt->bindValue(':genre', $genreName, PDO::PARAM_STR);
+		$stmt->execute();
+		
+		$stmt = $db->prepare('INSERT INTO genre_lookup(user_id, genre_id) VALUES(:id, :lastId)');
+		$stmt->bindValue(':id', $myId, PDO::PARAM_INT);
+		$stmt->bindValue(':lastId', $db->lastInsertId(), PDO::PARAM_INT);
+		$stmt->execute();
 		exit;
 	}
 	function getGenre() {
@@ -303,7 +315,12 @@
 		}
 		$genres = "{\"genres\" : [ ";;
 		$count = 0;
-		foreach ($db->query('SELECT g.name AS name FROM genre g INNER JOIN genre_lookup gl ON gl.genre_id = g.id WHERE gl.user_id = ' . $myId . ';') as $row) {
+		
+		$stmt = $db->prepare('SELECT g.name AS name FROM genre g INNER JOIN genre_lookup gl ON gl.genre_id = g.id WHERE gl.user_id=:id;');
+		$stmt->bindValue(':id', $myId, PDO::PARAM_INT);
+		$stmt->execute();
+		
+		while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			if ($count == 0) {
 				$genres .= "{\"name\": \"" . $row['name'] . "\"}";
 				$count++;
@@ -344,12 +361,26 @@
 		$mLink = $_POST['link'];
 		$mGenreId;
 		
-		foreach($db->query('SELECT g.id AS id FROM genre_lookup gl INNER JOIN genre g ON gl.genre_id = g.id WHERE g.name = \'' . $mGenre . '\' AND gl.user_id = ' . $myId . ';') as $row) {
+		$stmt = $db->prepare('SELECT g.id AS id FROM genre_lookup gl INNER JOIN genre g ON gl.genre_id = g.id WHERE g.name=:genre AND gl.user_id=:id;');
+		$stmt->bindValue(':genre', $mGenre, PDO::PARAM_STR);
+		$stmt->bindValue(':id', $myId, PDO::PARAM_INT);
+		$stmt->execute();
+		
+		while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$mGenreId = $row['id'];
 		}
 		
-		$db->query('INSERT INTO movie (name, length, img_link) VALUES (\'' . $mName . '\', \'' . $mLength . '\', \'' . $mLink . '\');');
-		$db->query('INSERT INTO movie_lookup (user_id, movie_id, genre_id) VALUES (\'' . $myId . '\', \'' . $db->lastInsertId() . '\', \'' . $mGenreId . '\');');
+		$stmt = $db->prepare('INSERT INTO movie (name, length, img_link) VALUES (:name, :length, :link);');
+		$stmt->bindValue(':name', $mName, PDO::PARAM_STR);
+		$stmt->bindValue(':length', $mLength, PDO::PARAM_STR);
+		$stmt->bindValue(':link', $mLink, PDO::PARAM_STR);
+		$stmt->execute();
+		
+		$stmt = $db->prepare('INSERT INTO movie_lookup (user_id, movie_id, genre_id) VALUES (:id, :lastId, :genreId);');
+		$stmt->bindValue(':id', $myId, PDO::PARAM_INT);
+		$stmt->bindValue(':lastId', $db->lastInsertId(), PDO::PARAM_INT);
+		$stmt->bindValue(':genreId', $mGenreId, PDO::PARAM_INT);
+		$stmt->execute();
 		
 		exit;
 	}
@@ -374,11 +405,10 @@
 			$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
 		}
 		$movId = $_POST['movieId'];
-		//echo $movId . " " . $myId;
-		//echo 'DELETE FROM movie_lookup WHERE movie_id = ' . $movId . ' AND user_id = ' . $myId . ';';
 		
-		$db->query('DELETE FROM movie_lookup WHERE id = ' . $movId . ';');
-		
+		$stmt = $db->prepare('DELETE FROM movie_lookup WHERE id=:movid;');
+		$stmt->bindValue(':movid', $movId, PDO::PARAM_INT);
+		$stmt->execute();		
 		exit;
 	}
 	
@@ -402,15 +432,23 @@
 		}
 		
 		$userName = $_POST['username'];
-		$password = $_POST['password'];
+		$preHash = $_POST['password'];
+		$password = password_hash($preHash, PASSWORD_DEFAULT);
 		$name = $_POST['name'];
 		$email = $_POST['email'];
 		
-		$db->query('INSERT INTO user (username, password, name, email) VALUES (\'' . $userName . '\', \'' . $password . '\', \'' . $name . '\', \'' . $email . '\')');
+		$stmt = $db->prepare('INSERT INTO user (username, password, name, email) VALUES (:uname, :password, :name, :email);');
+		$stmt->bindValue(':uname', $userName, PDO::PARAM_STR);
+		$stmt->bindValue(':password', $password, PDO::PARAM_STR);
+		$stmt->bindValue(':name', $name, PDO::PARAM_STR);
+		$stmt->bindValue(':email', $email, PDO::PARAM_STR);
+		$stmt->execute();
 		
 		$newId = $db->lastInsertId();
 		
-		$db->query('INSERT INTO genre_lookup (user_id, genre_id) VALUES (' . $newId . ', 1),(' . $newId . ', 2),(' . $newId . ', 3),(' . $newId . ', 4),(' . $newId . ', 5),(' . $newId . ', 6)');
+		$stmt = $db->prepare('INSERT INTO genre_lookup (user_id, genre_id) VALUES (:newId, 1),(:newId, 2),(:newId, 3),(:newId, 4),(:newId, 5),(:newId, 6)');
+		$stmt->bindValue(':newId', $newId, PDO::PARAM_INT);
+		$stmt->execute();
 		
 		$_SESSION["isLoggedIn"] = true;
 		$_SESSION["userId"] = $newId;
@@ -418,7 +456,7 @@
 		exit;		
 	}
 	
-	function getUsers() {
+	function checkUser() {
 		session_start();
 		$userN = 'php';
 		$password = 'php-pass';
@@ -437,21 +475,24 @@
 			$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
 		}
 		
-		$count = 0;
-		$users = "{\"users\": [";
-		foreach($db->query('SELECT username FROM user;') as $row) {
-			if($count == 0) {
-				$users .= '{"username":"' . $row['username'] . '"}';
-				$count++;
-			}
-			else {
-				$users .= ',{"username":"' . $row['username'] . '"}';
-				$count++;
-			}
-		}
-		$users .= "]}";
+		$userName = $_POST['username'];
 		
-		echo $users;
+		$stmt = $db->prepare('SELECT username FROM user WHERE username=:uname;');
+		$stmt->bindValue(':uname', $userName, PDO::PARAM_STR);
+		$stmt->execute();
+		
+		$contains = false;
+		
+		while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$contains = true;
+		}
+		
+		if ($contains) {
+			echo "0";
+		}
+		else {
+			echo "1";
+		}
 		exit;
 	}
 ?>

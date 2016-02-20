@@ -8,7 +8,6 @@
 		<script src="js/materialize.js"></script>
 		<script src="js/init.js"></script>
 		<script>
-			var usernames;
 			function createAccount() {
 				var fName = $(".fName").val();
 				var lName = $(".lName").val();
@@ -49,36 +48,24 @@
 					$(".pWord2").val("").attr("placeholder", "Please the same password into both password fields...");
 					error = true;
 				}
-				
-				for (var i = 0; i < usernames.users.length; i++) {
-					if (usernames.users[i].username == userName) {
-						userExists = true;
-					}
-				}
-				
-				if (userExists) {
-					$(".uName").val("").attr("placeholder", "This username is taken, please choose a different one...");
-					error = true;
-				}
-				
 				if (!error) {
 					var url = "scripts.php";
-					data = { 'action': 'addUser', 'username': userName, 'password': password, 'name': fullName, 'email': email };
+					data = { 'action': 'checkUser', 'username': userName};
 					$.post(url, data, function (response) {
-						//alert(response);
-						window.location.replace("movies-home.php");						
-					});					
+						if (response == 1) {
+							var url = "scripts.php";
+							data = { 'action': 'addUser', 'username': userName, 'password': password, 'name': fullName, 'email': email };
+							$.post(url, data, function (response) {						
+								window.location.replace("movies-home.php");						
+							});
+						}	
+						else {
+							$(".uName").val("").attr("placeholder", "This username is taken, please choose a different one...");
+							error = true;
+						}
+					});	
 				}				
 			}
-			$(window).ready(function() {
-				var url = "scripts.php";
-				data = { 'action': 'getUsernames' };
-				$.post(url, data, function (response) {
-					//alert(response);
-					usernames = JSON.parse(response);	
-					//alert(usernames.users[0].username);
-				});	
-			});
 		</script>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>

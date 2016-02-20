@@ -19,8 +19,11 @@
 		echo "window.location.replace('movies.php');";
 	}
 ?>
+		var useGenre = false;
+		var myMovieList;
+		var myDisplayList;
+		
 		function logout() {
-			////alert("here");
 			var username = $("#uname").val();
 			var password = $("#pword").val();
 			var url = "scripts.php";
@@ -35,19 +38,16 @@
 			var url = "scripts.php";
 			data = {'action': 'notMyMovies'};
 			$.post(url, data, function (response) {
-				////alert(response);
 				var jsonResults = JSON.parse(response);
-				////alert(jsonResults.movies[0].name + " " + jsonResults.movies[0].link + " " + jsonResults.movies[0].genre + " " + jsonResults.movies[0].length + " " + jsonResults.movies[0].last + " " + jsonResults.movies[0].description);
+				myMovieList = jsonResults;
+				myDisplayList = JSON.parse(response);
 				
 				var col = 0;
 				var rowT = "";
 				
 				for (var i = 0; i < jsonResults.movies.length; i++) {
-					////alert("we're in");
-					//add a row to the table
 					rowT += "<td width=\"20%\"><table class=\"innerMovie\"><tr><td class=\"movieTitle centerT boldT noPad\">" + jsonResults.movies[i].name + "</td></tr><tr><td class=\"centerT noPad\"><img src=\"" + jsonResults.movies[i].link + "\" width=\"100\"></td></tr></table></td>";
 					col++;	
-					////alert(rowT);
 					if (col > 4) {
 						var tabAdd = document.getElementById("movieTab");
 						var tabRow = tabAdd.insertRow(-1);
@@ -62,7 +62,88 @@
 						var tabRow = tabAdd.insertRow(-1);
 						tabRow.innerHTML = rowT;
 				}
+				
+				var genreList = [];
+				var genreChecks = "";
+				for (var i = 0; i < myMovieList.movies.length; i++) {
+					////alert(myMovieList.movies[i].genre);
+					if (jQuery.inArray(myMovieList.movies[i].genre, genreList).toString() == "-1") {
+						////alert(myMovieList.movies[i].genre);
+						genreList.push(myMovieList.movies[i].genre);
+						genreChecks += "<br><span class=\"disabledOption\"><input type=\"checkbox\" class=\"genreSelect\" name=\"genreSelector\" value=\"" + myMovieList.movies[i].genre + "\" disabled>&nbsp;" + myMovieList.movies[i].genre + "</span>";
+					}
+				}
+				$(".filterGenre").html(genreChecks);
 			});
+		}
+		function filter() {
+			$(".filterOptions").animate({right: '0px'});
+		}
+		function closeFilter() {			
+			$(".filterOptions").animate({right: '-300px'});
+		}
+		function inputFilter() {
+			var checkedVals = [];
+			
+			$(".movieList").html("<div class=\"filterButton\"><input type=\"button\" class=\"btn-large waves-effect waves-red buttonRed lighten-1 subButton\" value=\"Filter\" onclick=\"filter();\"></div><h2 class=\"centerT topDown\">Popular Movies</h2><table class=\"movieTable\" id=\"movieTab\"></table>");
+			
+			if (useGenre) {
+				myDisplayList.movies = [];
+				////alert(myMovieList.movies.length);
+				$("input[name=genreSelector]:checked").each(function() {
+					checkedVals.push($(this).val());
+					////alert($(this).val());
+				});
+				////alert(myMovieList.movies.length);
+				for (var i = 0; i < myMovieList.movies.length; i++) {
+					for (var j = 0; j < checkedVals.length; j++) {
+						////alert(checkedVals[j] + " " + myMovieList.movies[i].genre);
+						if (checkedVals[j] == myMovieList.movies[i].genre) {
+							myDisplayList.movies.push(myMovieList.movies[i]);			
+						}
+					}
+				}			
+			}
+			else {
+				myDisplayList.movies = [];
+				for (var i = 0; i < myMovieList.movies.length; i++) {
+					myDisplayList.movies.push(myMovieList.movies[i]);
+				}
+			}
+			
+			var col = 0;
+			var rowT = "";
+			
+			for (var i = 0; i < myDisplayList.movies.length; i++) {
+				rowT += "<td width=\"20%\"><table class=\"innerMovie\"><tr><td class=\"movieTitle centerT boldT noPad\">" + myDisplayList.movies[i].name + "</td></tr><tr><td class=\"centerT noPad\"><img src=\"" + myDisplayList.movies[i].link + "\" width=\"100\"></td></tr></table></td>";
+				col++;	
+				if (col > 4) {
+					var tabAdd = document.getElementById("movieTab");
+					var tabRow = tabAdd.insertRow(-1);
+					tabRow.innerHTML = rowT;
+					rowT = "";
+					col = 0;
+				}
+				
+			}
+			if (col != 0) {
+				var tabAdd = document.getElementById("movieTab");
+					var tabRow = tabAdd.insertRow(-1);
+					tabRow.innerHTML = rowT;
+			}
+			$(".filterOptions").animate({right: '-300px'});
+		}
+		function useGenres() {
+			if (useGenre) {
+				$(".openOption").attr("class", "disabledOption");
+				$(".genreSelect").prop("disabled", true).attr("checked", false);
+				useGenre = false;
+			}
+			else {
+				$(".disabledOption").attr("class", "openOption");
+				$(".genreSelect").prop("disabled", false);
+				useGenre = true;
+			}
 		}
 		</script>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -83,15 +164,28 @@
 					<li><a href="popmovies.php">Popular Movies</a></li>
 					<li onclick="logout()"><a>Logout</a></li>
 				</ul>
-				<!-- <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons white">menu</i></a>-->
 			</div>			
 		</nav>
-		<div id="pageContent" class="tall">
+		<div id="pageContent" class="tall">			
 			<div class="movieList centerT">
+				<div class="filterButton">
+					<input type="button" class="btn-large waves-effect waves-red buttonRed lighten-1 subButton" value="Filter" onclick="filter();">
+				</div>
 				<h2 class="centerT topDown">Popular Movies</h2>
 				<table class="movieTable" id="movieTab">
 					
 				</table>
+			</div>
+		</div>
+		<div class="filterOptions">			
+			<span onclick="closeFilter()"><i class="material-icons close">highlight_off</i></span>
+			<div class="filterInfo">
+				<span class="filterTitle">GENRES&nbsp;&nbsp;<input type="checkbox" value="actionGenre" onclick="useGenres();"></span>
+				<div class="filterGenre">
+				</div>
+				<br>
+				<br>
+				<input type="button" class="btn-large waves-effect waves-red buttonRed lighten-1 subButton" value="Filter" onclick="inputFilter();">
 			</div>
 		</div>
 		<footer class="page-footer coolRed fixed">
