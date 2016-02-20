@@ -431,6 +431,8 @@
 			$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
 		}
 		
+		echo("here");
+		die;
 		$userName = $_POST['username'];
 		$preHash = $_POST['password'];
 		$password = password_hash($preHash, PASSWORD_DEFAULT);

@@ -21,7 +21,7 @@
 			var url = "scripts.php";
 			data = {'action': 'login', 'username': username, 'password': password};
 			$.post(url, data, function (response) {
-				////alert(response);
+				alert(response);
 				if (response == 1) {
 					window.location.replace("movies-home.php");	
 				}
