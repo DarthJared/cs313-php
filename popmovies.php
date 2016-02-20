@@ -66,9 +66,7 @@
 				var genreList = [];
 				var genreChecks = "";
 				for (var i = 0; i < myMovieList.movies.length; i++) {
-					////alert(myMovieList.movies[i].genre);
 					if (jQuery.inArray(myMovieList.movies[i].genre, genreList).toString() == "-1") {
-						////alert(myMovieList.movies[i].genre);
 						genreList.push(myMovieList.movies[i].genre);
 						genreChecks += "<br><span class=\"disabledOption\"><input type=\"checkbox\" class=\"genreSelect\" name=\"genreSelector\" value=\"" + myMovieList.movies[i].genre + "\" disabled>&nbsp;" + myMovieList.movies[i].genre + "</span>";
 					}
@@ -88,16 +86,12 @@
 			$(".movieList").html("<div class=\"filterButton\"><input type=\"button\" class=\"btn-large waves-effect waves-red buttonRed lighten-1 subButton\" value=\"Filter\" onclick=\"filter();\"></div><h2 class=\"centerT topDown\">Popular Movies</h2><table class=\"movieTable\" id=\"movieTab\"></table>");
 			
 			if (useGenre) {
-				myDisplayList.movies = [];
-				////alert(myMovieList.movies.length);
+				myDisplayList.movies = [];]
 				$("input[name=genreSelector]:checked").each(function() {
 					checkedVals.push($(this).val());
-					////alert($(this).val());
-				});
-				////alert(myMovieList.movies.length);
+				});]
 				for (var i = 0; i < myMovieList.movies.length; i++) {
 					for (var j = 0; j < checkedVals.length; j++) {
-						////alert(checkedVals[j] + " " + myMovieList.movies[i].genre);
 						if (checkedVals[j] == myMovieList.movies[i].genre) {
 							myDisplayList.movies.push(myMovieList.movies[i]);			
 						}

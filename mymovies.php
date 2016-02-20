@@ -106,7 +106,6 @@
 				var genreList = [];
 				var genreChecks = "";
 				for (var i = 0; i < myMovieList.movies.length; i++) {
-					////alert(myMovieList.movies[i].genre);
 					if (jQuery.inArray(myMovieList.movies[i].genre, genreList).toString() == "-1") {
 						genreList.push(myMovieList.movies[i].genre);
 						genreChecks += "<br><span class=\"disabledOption\"><input type=\"checkbox\" class=\"genreSelect\" name=\"genreSelector\" value=\"" + myMovieList.movies[i].genre + "\" disabled>&nbsp;" + myMovieList.movies[i].genre + "</span>";
@@ -300,30 +299,33 @@
 		function closeFilter() {			
 			$(".filterOptions").animate({right: '-300px'});
 		}
-		function inputFilter() {
-			////alert("here");			
+		function inputFilter() {		
 			var checkedVals = [];
+			myDisplayList.movies = [];
+			for (var i = 0; i < myMovieList.movies.length; i++) {				
+				myDisplayList.movies.push(myMovieList.movies[i]);
+			}
 			
 			$(".movieList").html("<div class=\"filterButton\"><input type=\"button\" class=\"btn-large waves-effect waves-red buttonRed lighten-1 subButton\" value=\"Filter\" onclick=\"filter();\"></div><h2 class=\"centerT topDown\">My Movies</h2><table class=\"movieTable\" id=\"movieTab\"><tr id=\"firstRow\"><td width=\"20%\" onclick=\"showAdder()\"><table class=\"innerMovie\"><tr><td class=\"movieTitle centerT boldT noPad\">ADD MOVIE</td></tr><tr><td class=\"centerT noPad\"><div class=\"movieAdd\"><table class=\"movieAddTab\" ><tr><td class=\"moviePlus\">+</td></tr></table></div></td></tr><tr><td class=\"centerT noPad lastW\"></td></tr></table></td></tr></table>");
 			
-			if (useGenre) {
-				myDisplayList.movies = [];
-				////alert(myMovieList.movies.length);
+			if (useGenre) {	
 				$("input[name=genreSelector]:checked").each(function() {
 					checkedVals.push($(this).val());
-					////alert($(this).val());
 				});
-				////alert(myMovieList.movies.length);
-				for (var i = 0; i < myMovieList.movies.length; i++) {
+				for (var i = 0; i < myDisplayList.movies.length; i++) {
+					var containsGenre = false;
 					for (var j = 0; j < checkedVals.length; j++) {
-						////alert(checkedVals[j] + " " + myMovieList.movies[i].genre);
-						if (checkedVals[j] == myMovieList.movies[i].genre) {
-							myDisplayList.movies.push(myMovieList.movies[i]);			
+						if (checkedVals[j] == myDisplayList.movies[i].genre) {
+							containsGenre = true;
 						}
 					}
+					if (!containsGenre) {
+						myDisplayList.movies.splice(i, 1);
+						i--;
+					}
+					
 				}			
 			}
-			////alert("here");
 			
 			var today = new Date();
 			var dd = parseInt(today.getDate());
@@ -392,7 +394,6 @@
 					var monthDate = new Date(extMonthStr + " " + day.toString() + ", " + year.toString() + " 00:00:00");
 					
 					var dateDif = today.getTime() - monthDate.getTime();
-					//alert(dateDif);
 					var dayMils = 1000 * 60 * 60 * 24;
 					
 					if (option == 0) {
@@ -425,9 +426,7 @@
 				var option = $(".watched").val();
 				
 				for (var i = 0; i < myDisplayList.movies.length; i++) {
-					////alert(myDisplayList.movies[i].last.toString());
 					if (myDisplayList.movies[i].last.length < 1) {
-						////alert("null");
 						myDisplayList.movies.splice(i, 1);
 						i--;
 					}
@@ -477,7 +476,6 @@
 						var year = parseInt(dates[3]);	
 						var monthDate = new Date(extMonthStr + " " + day.toString() + ", " + year.toString() + " 00:00:00");						
 						var dateDif = today.getTime() - monthDate.getTime();
-						////alert(dateDif);
 						var dayMils = 1000 * 60 * 60 * 24;
 						
 						if (option == 0) {
@@ -519,7 +517,6 @@
 			var rowT = "";			
 			
 			for (var i = 0; i < myDisplayList.movies.length; i++) {
-				////alert("here");
 				if (rowCount == 0) {
 					var row = document.getElementById("firstRow");
 					var name = row.insertCell(-1);

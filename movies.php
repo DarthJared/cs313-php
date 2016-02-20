@@ -15,13 +15,11 @@
 	}	
 ?>
 		function login() {
-			////alert("here");
 			var username = $("#uname").val();
 			var password = $("#pword").val();
 			var url = "scripts.php";
 			data = {'action': 'login', 'username': username, 'password': password};
 			$.post(url, data, function (response) {
-				//alert(response);
 				if (response == 1) {
 					window.location.replace("movies-home.php");	
 				}
@@ -31,7 +29,6 @@
 			});
 		}
 		$(window).ready(function() {
-			////alert("here");
 			$('#uname').keypress(function(e){
 				if(e.keyCode==13)
 					$('#loginBut').click();

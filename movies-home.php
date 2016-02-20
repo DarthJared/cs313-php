@@ -18,16 +18,13 @@
 	else {
 		echo "window.location.replace('movies.php');";
 	}
-	// echo "//alert('" . $_SESSION['userId'] . "');";
 ?>
 		function logout() {
-			////alert("here");
 			var username = $("#uname").val();
 			var password = $("#pword").val();
 			var url = "scripts.php";
 			data = {'action': 'logout'};
 			$.post(url, data, function (response) {
-				////alert(response);
 				window.location.replace("movies.php");	
 			});
 		}
