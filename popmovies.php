@@ -89,7 +89,7 @@
 				myDisplayList.movies = [];
 				$("input[name=genreSelector]:checked").each(function() {
 					checkedVals.push($(this).val());
-				});]
+				});
 				for (var i = 0; i < myMovieList.movies.length; i++) {
 					for (var j = 0; j < checkedVals.length; j++) {
 						if (checkedVals[j] == myMovieList.movies[i].genre) {
