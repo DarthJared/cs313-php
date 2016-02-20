@@ -431,14 +431,13 @@
 			$db = new PDO('mysql:host=' . $dbHost . ':' . $dbPort . ';dbname=movie_manager', $dbUser, $dbPassword);
 		}
 		
+		require 'password.php';
 		$userName = $_POST['username'];
 		$preHash = $_POST['password'];
 		$password = password_hash($preHash, PASSWORD_DEFAULT);
 		$name = $_POST['name'];
 		$email = $_POST['email'];
-		echo($password);
-		die();
-		
+				
 		$stmt = $db->prepare('INSERT INTO user (username, password, name, email) VALUES (:uname, :password, :name, :email);');
 		$stmt->bindValue(':uname', $userName, PDO::PARAM_STR);
 		$stmt->bindValue(':password', $password, PDO::PARAM_STR);
