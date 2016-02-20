@@ -432,7 +432,7 @@
 		}
 		
 		echo("here");
-		die;
+		die();
 		$userName = $_POST['username'];
 		$preHash = $_POST['password'];
 		$password = password_hash($preHash, PASSWORD_DEFAULT);
