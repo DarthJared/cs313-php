@@ -86,7 +86,7 @@
 			$(".movieList").html("<div class=\"filterButton\"><input type=\"button\" class=\"btn-large waves-effect waves-red buttonRed lighten-1 subButton\" value=\"Filter\" onclick=\"filter();\"></div><h2 class=\"centerT topDown\">Popular Movies</h2><table class=\"movieTable\" id=\"movieTab\"></table>");
 			
 			if (useGenre) {
-				myDisplayList.movies = [];]
+				myDisplayList.movies = [];
 				$("input[name=genreSelector]:checked").each(function() {
 					checkedVals.push($(this).val());
 				});]
