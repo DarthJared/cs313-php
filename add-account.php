@@ -52,6 +52,7 @@
 					var url = "scripts.php";
 					data = { 'action': 'checkUser', 'username': userName};
 					$.post(url, data, function (response) {
+						alert(response);
 						if (response == 1) {
 							var url = "scripts.php";
 							data = { 'action': 'addUser', 'username': userName, 'password': password, 'name': fullName, 'email': email };
