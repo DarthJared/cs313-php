@@ -815,10 +815,10 @@
 				<span class="filterTitle">WATCHED:&nbsp;&nbsp;<input type="checkbox" value="actionGenre" onclick="useWatched();"></span>
 				<br>
 				<select class="watched" disabled>
-					<option>Today</option>
-					<option>Yesterday</option>
-					<option>This Week</option>
-					<option>This Month</option>
+					<option value="0">The Last Day</option>
+					<option value="1">The Last Two Days</option>
+					<option value="2">The Last Week</option>
+					<option value="3">The Last Month</option>
 				</select>
 				<br>
 				<br>
